@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Community Business Intelligence Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 0.95em; }
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            border-left: 4px solid #3498db;
+        }
+        .kpi-card.green { border-left-color: #27ae60; }
+        .kpi-card.orange { border-left-color: #e67e22; }
+        .kpi-card.purple { border-left-color: #9b59b6; }
+        .kpi-value { font-size: 2em; font-weight: bold; color: #1e3a5f; }
+        .kpi-label { color: #666; margin-top: 5px; font-size: 0.9em; }
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+        .chart-card h3 {
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.85em;
+        }
+        .badge {
+            display: inline-block;
+            background: #e8f4f8;
+            color: #1e3a5f;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏢 Spring Community Business Intelligence Dashboard</h1>
+        <p>Harris County, Texas | CompTIA Data+ Portfolio Project</p>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi-card">
+            <div class="kpi-value">543,732</div>
+            <div class="kpi-label">Total Employment</div>
+        </div>
+        <div class="kpi-card green">
+            <div class="kpi-value">30,976</div>
+            <div class="kpi-label">Total Establishments</div>
+        </div>
+        <div class="kpi-card orange">
+            <div class="kpi-value">$48,935</div>
+            <div class="kpi-label">Avg Payroll/Employee</div>
+        </div>
+        <div class="kpi-card purple">
+            <div class="kpi-value">79.2%</div>
+            <div class="kpi-label">Small Business Rate</div>
+        </div>
+    </div>
+
+    <div class="chart-row">
+        <div class="chart-card">
+            <h3>📊 Employment by Sector <span class="badge">Top 10</span></h3>
+            <canvas id="sectorChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>📍 Employment by ZIP Code <span class="badge">Spring Area</span></h3>
+            <canvas id="zipChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-row">
+        <div class="chart-card">
+            <h3>🏬 Establishments by Sector</h3>
+            <canvas id="estChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>📈 Employment vs Establishments</h3>
+            <canvas id="scatterChart"></canvas>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Data Source: U.S. Census Bureau County Business Patterns (Simulated) |
+        Project: CompTIA Data+ Certification Portfolio |
+        Generated: 2025-12-05</p>
+    </div>
+
+    <script>
+        // Color palette
+        const colors = {
+            primary: '#1e3a5f',
+            secondary: '#3498db',
+            accent: '#27ae60',
+            warning: '#e67e22',
+            palette: ['#1e3a5f', '#2980b9', '#27ae60', '#e67e22', '#9b59b6', '#e74c3c', '#1abc9c', '#f39c12', '#34495e', '#16a085']
+        };
+
+        // Sector Employment Bar Chart
+        new Chart(document.getElementById('sectorChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Accommodation and Fo', 'Retail Trade - Elect', 'Arts and Entertainme', 'Transportation - Pos', 'Retail Trade - Motor', 'Construction', 'Manufacturing - Meta', 'Transportation - Air', 'Manufacturing - Wood', 'Public Administratio'],
+                datasets: [{
+                    label: 'Employment',
+                    data: [52353, 49696, 38262, 32580, 30375, 28752, 22000, 21846, 20655, 19459],
+                    backgroundColor: colors.palette,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+
+        // ZIP Code Bar Chart
+        new Chart(document.getElementById('zipChart'), {
+            type: 'bar',
+            data: {
+                labels: ['77389', '77381', '77382', '77380', '77386', '77373', '77379', '77388'],
+                datasets: [{
+                    label: 'Employment',
+                    data: [9679, 9231, 9038, 8071, 7713, 6974, 6973, 4114],
+                    backgroundColor: colors.secondary,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Establishments Doughnut Chart
+        new Chart(document.getElementById('estChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Accommodation and Fo', 'Retail Trade - Elect', 'Arts and Entertainme', 'Transportation - Pos', 'Retail Trade - Motor', 'Construction'],
+                datasets: [{
+                    data: [1939, 1553, 1822, 1629, 675, 1797],
+                    backgroundColor: colors.palette.slice(0, 6)
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'right' } }
+            }
+        });
+
+        // Scatter Plot
+        const scatterData = [
+            {x: 1939, y: 52353},{x: 1553, y: 49696},{x: 1822, y: 38262},{x: 1629, y: 32580},{x: 675, y: 30375},{x: 1797, y: 28752},{x: 1000, y: 22000},{x: 993, y: 21846}
+        ];
+        new Chart(document.getElementById('scatterChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Sectors',
+                    data: scatterData,
+                    backgroundColor: colors.primary,
+                    pointRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Establishments' } },
+                    y: { title: { display: true, text: 'Employment' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
