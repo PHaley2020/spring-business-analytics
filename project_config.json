@@ -1,0 +1,392 @@
+{
+  "project": {
+    "name": "Spring Community Business Intelligence Analysis",
+    "description": "A comprehensive data analytics portfolio project demonstrating mastery of all five CompTIA Data+ domains while incorporating practical skills from LinkedIn Learning's Data Analytics Foundations course.",
+    "objective": "Transform raw business and demographic data into actionable insights through a complete data analytics lifecycle—from acquisition through governance.",
+    "target_location": "Spring, Texas / Harris County",
+    "timeline_weeks": 5
+  },
+  "curriculum_alignment": {
+    "comptia_data_plus": {
+      "exam_number": "DA0-001",
+      "domains": [
+        {
+          "domain": "1.0 Data Concepts and Environments",
+          "weight": "15%",
+          "topics": [
+            "Data schemas (star, snowflake)",
+            "Data types (date, numeric, alphanumeric, categorical)",
+            "Data structures (structured, unstructured)",
+            "File formats (CSV, JSON, XML)"
+          ]
+        },
+        {
+          "domain": "2.0 Data Mining",
+          "weight": "25%",
+          "topics": [
+            "ETL/ELT processes",
+            "Data collection methods (APIs, web scraping, surveys)",
+            "Data cleansing (duplicates, missing values, outliers)",
+            "Data manipulation (filtering, sorting, aggregation)",
+            "Query optimization"
+          ]
+        },
+        {
+          "domain": "3.0 Data Analysis",
+          "weight": "23%",
+          "topics": [
+            "Descriptive statistics (mean, median, mode, std dev)",
+            "Inferential statistics (t-tests, chi-squared, correlation)",
+            "Trend analysis",
+            "Performance analysis",
+            "Exploratory data analysis"
+          ]
+        },
+        {
+          "domain": "4.0 Visualization",
+          "weight": "23%",
+          "topics": [
+            "Report design and requirements",
+            "Dashboard development",
+            "Chart types (line, bar, scatter, heat map, geographic)",
+            "Report types (static, dynamic, ad-hoc, recurring)"
+          ]
+        },
+        {
+          "domain": "5.0 Data Governance, Quality, and Controls",
+          "weight": "14%",
+          "topics": [
+            "Access requirements (role-based)",
+            "Data classification (PII, PHI)",
+            "Data quality dimensions (accuracy, completeness, integrity)",
+            "Master data management"
+          ]
+        }
+      ]
+    },
+    "linkedin_learning": {
+      "course": "Learning Data Analytics: 1 Foundations",
+      "instructor": "Robin Hunt",
+      "chapters": [
+        "Getting Started with Data Analysis",
+        "Fundamentals of Data Understanding",
+        "Key Elements to Understand when Starting Data Analysis",
+        "Getting Started with a Data Project",
+        "Data Importing, Exporting, and Connections",
+        "Getting Started with Data Cleaning and Modeling",
+        "Applying Common Techniques for All Data Analysts"
+      ]
+    }
+  },
+  "data_sources": {
+    "primary": [
+      {
+        "name": "Census County Business Patterns 2022",
+        "description": "Business establishment counts, employment, and payroll data by county and industry",
+        "urls": {
+          "county_file": "https://www2.census.gov/programs-surveys/cbp/datasets/2022/cbp22co.zip",
+          "state_file": "https://www2.census.gov/programs-surveys/cbp/datasets/2022/cbp22st.zip",
+          "zip_code_detail": "https://www2.census.gov/programs-surveys/cbp/datasets/2022/zbp22detail.zip",
+          "us_file": "https://www2.census.gov/programs-surveys/cbp/datasets/2022/cbp22us.zip"
+        },
+        "format": "CSV (zipped)",
+        "fields": [
+          "fipstate", "fipscty", "naics", "emp", "qp1", "ap", "est",
+          "n1_4", "n5_9", "n10_19", "n20_49", "n50_99", "n100_249",
+          "n250_499", "n500_999", "n1000"
+        ],
+        "documentation": "https://www.census.gov/programs-surveys/cbp/technical-documentation/record-layouts.html",
+        "harris_county_fips": "48201"
+      },
+      {
+        "name": "SBA PPP Loan Data",
+        "description": "Paycheck Protection Program loans to small businesses during COVID-19",
+        "urls": {
+          "github_mirror": "https://github.com/sbooeshaghi/SBA-PPP-Loan-Data",
+          "texas_under_150k": "https://github.com/sbooeshaghi/SBA-PPP-Loan-Data/tree/master/under_150k",
+          "over_150k_all": "https://github.com/sbooeshaghi/SBA-PPP-Loan-Data/tree/master/over_150k",
+          "official_source": "https://data.sba.gov/dataset/ppp-foia"
+        },
+        "format": "CSV",
+        "fields": [
+          "LoanRange", "BusinessName", "Address", "City", "State", "Zip",
+          "NAICSCode", "BusinessType", "RaceEthnicity", "Gender", "Veteran",
+          "NonProfit", "JobsRetained", "DateApproved", "Lender", "CD"
+        ],
+        "filter_for_project": "State = TX, filter for Harris County zip codes"
+      }
+    ],
+    "supplementary": [
+      {
+        "name": "NAICS Industry Codes",
+        "description": "North American Industry Classification System codes for business categorization",
+        "url": "https://www.census.gov/naics/",
+        "usage": "Join with CBP data for industry names and categories"
+      },
+      {
+        "name": "Census QuickFacts - Harris County",
+        "description": "Demographic overview data",
+        "url": "https://www.census.gov/quickfacts/fact/table/harriscountytexas",
+        "usage": "Context for population and economic indicators"
+      }
+    ],
+    "spring_texas_context": {
+      "zip_codes": ["77373", "77379", "77380", "77381", "77382", "77383", "77386", "77388", "77389"],
+      "county": "Harris County and Montgomery County",
+      "note": "Filter datasets using these zip codes for Spring-specific analysis"
+    }
+  },
+  "project_phases": [
+    {
+      "phase": 1,
+      "name": "Data Concepts & Environment Setup",
+      "comptia_domain": "1.0",
+      "week": 1,
+      "tasks": [
+        {
+          "task": "Design star schema",
+          "details": "Create fact table (business_metrics) and dimension tables (dim_business, dim_location, dim_industry, dim_time)"
+        },
+        {
+          "task": "Set up database environment",
+          "details": "Initialize SQLite database with schema"
+        },
+        {
+          "task": "Create data dictionary",
+          "details": "Document all fields, data types, and relationships"
+        },
+        {
+          "task": "Define file structure",
+          "details": "Organize project directories for raw, processed, and output data"
+        }
+      ],
+      "deliverables": [
+        "Entity-Relationship Diagram (ERD)",
+        "Data Dictionary (Markdown)",
+        "Database schema SQL file"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Data Mining & Acquisition",
+      "comptia_domain": "2.0",
+      "week": 2,
+      "tasks": [
+        {
+          "task": "Download and extract datasets",
+          "details": "Retrieve CBP county data, filter for Harris County (FIPS 48201)"
+        },
+        {
+          "task": "Profile raw data",
+          "details": "Analyze missing values, duplicates, data types, distributions"
+        },
+        {
+          "task": "Build ETL pipeline",
+          "details": "Python script to extract, transform, and load data into SQLite"
+        },
+        {
+          "task": "Data cleansing",
+          "details": "Handle nulls, standardize formats, remove duplicates"
+        }
+      ],
+      "deliverables": [
+        "ETL Python script (etl_pipeline.py)",
+        "Data profiling report",
+        "Cleaned datasets in /data/processed/"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Data Analysis",
+      "comptia_domain": "3.0",
+      "week": 3,
+      "tasks": [
+        {
+          "task": "Descriptive statistics",
+          "details": "Calculate mean, median, mode, std dev for employment and payroll metrics"
+        },
+        {
+          "task": "Industry distribution analysis",
+          "details": "Frequency analysis of business types by NAICS sector"
+        },
+        {
+          "task": "Correlation analysis",
+          "details": "Examine relationships between establishment count, employment, and payroll"
+        },
+        {
+          "task": "Hypothesis testing",
+          "details": "Chi-squared test for industry distribution differences across areas"
+        },
+        {
+          "task": "Trend identification",
+          "details": "Compare year-over-year changes if multi-year data available"
+        }
+      ],
+      "deliverables": [
+        "Statistical analysis Jupyter notebook",
+        "Analysis summary report",
+        "SQL queries file (analysis.sql)"
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "Visualization & Reporting",
+      "comptia_domain": "4.0",
+      "week": 4,
+      "tasks": [
+        {
+          "task": "Design dashboard wireframe",
+          "details": "Create mockup with layout, navigation flow, and data story"
+        },
+        {
+          "task": "Build visualizations",
+          "details": "Create bar charts, geographic maps, heat maps, treemaps"
+        },
+        {
+          "task": "Implement interactivity",
+          "details": "Add filters for industry, location, employment size"
+        },
+        {
+          "task": "Create executive summary view",
+          "details": "KPI cards for key metrics"
+        }
+      ],
+      "deliverables": [
+        "Power BI dashboard (.pbix)",
+        "Dashboard design document",
+        "Static report export (PDF)"
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "Data Governance & Documentation",
+      "comptia_domain": "5.0",
+      "week": 5,
+      "tasks": [
+        {
+          "task": "Document data governance framework",
+          "details": "Define access roles, data classification, retention policies"
+        },
+        {
+          "task": "Implement quality controls",
+          "details": "Create validation rules and quality metrics"
+        },
+        {
+          "task": "Create data lineage documentation",
+          "details": "Document source-to-dashboard data flow"
+        },
+        {
+          "task": "Final project compilation",
+          "details": "Assemble all deliverables, write README, prepare portfolio presentation"
+        }
+      ],
+      "deliverables": [
+        "Data governance framework document",
+        "Quality audit log",
+        "Project README.md",
+        "Final presentation"
+      ]
+    }
+  ],
+  "tools_and_technologies": {
+    "database": {
+      "primary": "SQLite",
+      "alternative": "SQL Server Express",
+      "reason": "Free, portable, excellent for learning SQL"
+    },
+    "analysis": {
+      "python_libraries": ["pandas", "numpy", "scipy", "statsmodels"],
+      "alternative": "Excel with Analysis ToolPak"
+    },
+    "visualization": {
+      "primary": "Power BI Desktop",
+      "alternative": "Tableau Public",
+      "reason": "Free, industry-standard, aligns with Data+ exam"
+    },
+    "version_control": {
+      "platform": "GitHub",
+      "purpose": "Portfolio hosting and version control"
+    },
+    "development": {
+      "ide": "VS Code or Jupyter Notebook",
+      "sql_client": "DB Browser for SQLite or Azure Data Studio"
+    }
+  },
+  "repository_structure": {
+    "root": "spring-business-analytics",
+    "directories": {
+      "data": {
+        "raw": "Original downloaded datasets",
+        "processed": "Cleaned and transformed data",
+        "reference": "NAICS codes, FIPS codes, lookup tables"
+      },
+      "scripts": {
+        "files": [
+          "etl_pipeline.py",
+          "analysis.sql",
+          "statistical_analysis.ipynb",
+          "data_quality_checks.py"
+        ]
+      },
+      "dashboards": {
+        "files": [
+          "spring_business_dashboard.pbix",
+          "dashboard_mockup.png"
+        ]
+      },
+      "documentation": {
+        "files": [
+          "data_dictionary.md",
+          "governance_framework.md",
+          "erd_diagram.png",
+          "project_report.pdf"
+        ]
+      }
+    },
+    "root_files": [
+      "README.md",
+      "requirements.txt",
+      ".gitignore"
+    ]
+  },
+  "sample_analysis_questions": [
+    "Which NAICS sectors have the highest concentration of establishments in Harris County?",
+    "What is the average employment per establishment by industry sector?",
+    "How does Spring's business composition compare to Harris County overall?",
+    "Which industries show the highest annual payroll relative to employment?",
+    "What is the distribution of establishment sizes (employee count ranges)?",
+    "Are there statistically significant differences in business types across zip codes?",
+    "What correlations exist between PPP loan amounts and jobs retained?"
+  ],
+  "expected_skills_demonstrated": [
+    "Database design and schema creation",
+    "SQL query writing and optimization",
+    "ETL pipeline development",
+    "Data profiling and quality assessment",
+    "Statistical analysis (descriptive and inferential)",
+    "Data visualization best practices",
+    "Dashboard design and development",
+    "Data governance documentation",
+    "Technical documentation and communication"
+  ],
+  "portfolio_presentation": {
+    "github_repo": {
+      "readme_sections": [
+        "Project Overview",
+        "Data Sources",
+        "Methodology",
+        "Key Findings",
+        "Technical Implementation",
+        "How to Reproduce",
+        "Lessons Learned"
+      ]
+    },
+    "talking_points": [
+      "End-to-end data analytics lifecycle demonstration",
+      "Real-world public data application",
+      "CompTIA Data+ domain coverage",
+      "Business intelligence dashboard creation",
+      "Data governance awareness"
+    ]
+  }
+}
