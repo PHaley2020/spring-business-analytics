@@ -141,15 +141,17 @@ def run_etl_pipeline():
     # Ensure directories exist
     Path(PROCESSED_DIR).mkdir(parents=True, exist_ok=True)
 
-    # Find county data file
+    # Find county data file (support both .txt and .csv extensions)
     county_file = None
     for f in os.listdir(RAW_DATA_DIR):
-        if f.startswith('cbp22co') and f.endswith('.txt'):
+        if f.startswith('cbp22co') and (f.endswith('.txt') or f.endswith('.csv')):
             county_file = os.path.join(RAW_DATA_DIR, f)
             break
 
     if county_file is None:
-        print("ERROR: County data file not found. Run setup_project.py first.")
+        print("ERROR: County data file not found.")
+        print(f"Looking for files starting with 'cbp22co' in {RAW_DATA_DIR}/")
+        print("Run setup_project.py first or place the CBP county file in data/raw/")
         return
 
     # Execute ETL
